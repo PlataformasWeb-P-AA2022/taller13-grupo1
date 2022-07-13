@@ -1,3 +1,3 @@
 
-user= 'salai'
+user= 'sala'
 contrasenia=1234

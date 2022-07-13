@@ -44,5 +44,5 @@ def obtener_edificio(url):
     """
     r = requests.get(url, auth=(user,contrasenia))
     nombre_edificio = json.loads(r.content)['nombre']
-    cadena="%s %s " %(nombre_edificio)
+    cadena="%s " %(nombre_edificio)
     return cadena
