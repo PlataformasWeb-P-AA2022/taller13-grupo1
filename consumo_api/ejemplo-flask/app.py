@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 import requests
 import json
+from config import user,contrasenia
 
 app = Flask(__name__, template_folder='templates')
 
@@ -14,7 +15,7 @@ def los_estudiantes():
     """
     """
     r = requests.get("http://127.0.0.1:8000/api/estudiantes/",
-            auth=('user', 'pass'))
+            auth=(user,contrasenia))
     estudiantes = json.loads(r.content)['results']
     numero_estudiantes = json.loads(r.content)['count']
     return render_template("losestudiantes.html", estudiantes=estudiantes,
@@ -26,7 +27,7 @@ def los_telefonos():
     """
     """
     r = requests.get("http://127.0.0.1:8000/api/numerost/",
-            auth=('user', 'pass'))
+            auth=(user,contrasenia))
     datos = json.loads(r.content)['results']
     numero = json.loads(r.content)['count']
     return render_template("lostelefonos.html", datos=datos,
@@ -38,11 +39,11 @@ def los_telefonos_dos():
     """
     """
     r = requests.get("http://127.0.0.1:8000/api/numerost/",
-            auth=('user', 'pass'))
+            auth=(user,contrasenia))
     datos = json.loads(r.content)['results']
     numero = json.loads(r.content)['count']
     datos2 = []
-    for d in datos:
+    for d in datos: 
         datos2.append({'telefono':d['telefono'], 'tipo':d['tipo'],
         'estudiante': obtener_estudiante(d['estudiante'])})
     return render_template("lostelefonosdos.html", datos=datos2,
@@ -53,6 +54,9 @@ def los_telefonos_dos():
 def obtener_estudiante(url):
     """
     """
-    r = requests.get(url, auth=('user', 'pass'))
+    r = requests.get(url, auth=(user,contrasenia))
     nombre_estudiante = json.loads(r.content)['nombre']
-    return nombre_estudiante
+    apellido_estudiante = json.loads(r.content)['apellido']
+    cadena="%s %s " %(nombre_estudiante, apellido_estudiante)
+    nomyape=nombre_estudiante+" "+apellido_estudiante
+    return cadena
