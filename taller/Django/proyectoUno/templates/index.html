@@ -1,0 +1,67 @@
+{% extends "master.html" %}
+
+{% block title %}
+Listado de Estudiantes | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<div >
+      <div class="numedi" >
+        Número de Edificios {{ numEdificios }}
+      </div>
+
+</div><br>
+<div class="container">
+  <table id="tabla_datos" >
+    <thead >
+      <tr>
+        <th>Edificio</th>
+        <th>Dirección</th>
+        <th>Ciudad</th>
+        <th>Tipo</th>
+        <th>Departamentos</th>
+        <th>Opciones</th>
+      </tr>
+    </thead>
+    {% for e in edificios %}
+    <tr>
+      <td> {{e.nombre}}</td>
+      <td> {{e.direccion}}</td>
+      <td> {{e.ciudad}}</td>
+      <td> {{e.tipo}}</td>
+      <td>
+        <span>[<a class="botone"
+          href="{% url 'agregarDepartamentoEdificio' e.id %}">Agregar Departamento</a>]</span>
+        <ul>
+          {% for d in e.departamentos.all %}                
+            <li>Propietario: {{d.propietario}}</li>
+            <ul>             
+              <li>Costo: {{d.costo}} $</li>
+              <li>Número de cuartos: {{d.numCuartos}}</li>
+              <li>[<a class="botonv"
+                href="{% url 'editarDepartamento' d.id %}">Editar</a>] - [<a class="botonr"
+                href="{% url 'eliminarDepartamento' d.id %}"
+                onclick="return confirm('¿Está seguro de la eliminación?')">Eliminar</a>]</span></li>
+            </ul>   
+            {% endfor %}
+        </ul>
+      </td>
+      <td class="arre">
+        <div class="bots">
+          <a class="botonv"  href="{% url 'obtenerEdificio' e.id %}" >Ver</a><br>
+          <a class="botone" href="{% url 'editarEdificio' e.id %}" >Editar</a>
+          <a class="botonr"  href="{% url 'eliminarEdificio' e.id %}" 
+            onclick="return confirm('¿Está seguro de la eliminación?')">Eliminar</a>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('#tabla_datos').DataTable();
+  });
+</script>
+
+{% endblock %}

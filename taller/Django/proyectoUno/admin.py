@@ -1,7 +1,5 @@
 from django.contrib import admin
 
-from django.contrib import admin
-
 # Importar las clases del modelo
 from proyectoUno.models import Edificio, Departamento
 
