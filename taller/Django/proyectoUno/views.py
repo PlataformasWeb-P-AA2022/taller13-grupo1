@@ -7,6 +7,12 @@ from proyectoUno.models import *
 # importar los formularios de forms.py
 from proyectoUno.forms import *
 
+from django.contrib.auth.models import User, Group
+from rest_framework import viewsets
+from rest_framework import permissions
+from proyectoUno.serializers import UserSerializer, GroupSerializer, \
+EdificioSerializer, DepartamentoSerializer
+
 # Create your views here.
 
 def index(request): 
@@ -106,3 +112,42 @@ def agregarDepartamentoEdificio(request, id):
     diccionario = {'formulario': formulario, 'edificio': edificio}
 
     return render(request, 'agregarDepartamentoEdificio.html', diccionario)
+
+# crear vistas a través de viewsets
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class DepartamentoViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+    """
+    queryset = Departamento.objects.all()
+    serializer_class = DepartamentoSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+
+class EdificioViewSet(viewsets.ModelViewSet):
+# class NumeroTelefonicoViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Edificio.objects.all()
+    serializer_class = EdificioSerializer
+    # permission_classes = [permissions.IsAuthenticated]
